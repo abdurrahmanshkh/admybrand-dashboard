@@ -64,3 +64,51 @@ export interface ApiResponse<T> {
   message: string;
   success: boolean;
 }
+
+export interface TableUser {
+  id: string;
+  name: string;
+  email: string;
+  status: 'active' | 'inactive' | 'pending';
+  role: string;
+  joinDate: string;
+  lastActive: string;
+  company?: string;
+  department?: string;
+  salary?: number;
+  performance?: number;
+  projects?: number;
+  avatar?: string;
+}
+
+export interface CampaignData {
+  id: string;
+  name: string;
+  channel: string;
+  status: string;
+  budget: number;
+  spent: number;
+  impressions: number;
+  clicks: number;
+  conversions: number;
+  ctr: number;
+  cpc: number;
+  startDate: string;
+  endDate: string;
+}
+
+export interface TableColumn {
+  id: string;
+  label: string;
+  accessor: string;
+  sortable?: boolean;
+  filterable?: boolean;
+  width?: number;
+  align?: 'left' | 'center' | 'right';
+}
+
+export interface TableFilter {
+  column: string;
+  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'greaterThan' | 'lessThan' | 'between';
+  value: any;
+}
