@@ -2,24 +2,27 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { LoginForm } from '@/components/auth/login-form'
-import { useAuth } from '@/hooks/use-auth'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
+import { useAuth } from '@/hooks/use-auth'
 
-export default function LoginPage() {
+interface AuthGuardProps {
+  children: React.ReactNode
+}
+
+export function AuthGuard({ children }: AuthGuardProps) {
   const { isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      router.push('/dashboard')
+    if (!isLoading && !isAuthenticated) {
+      router.push('/')
     }
   }, [isAuthenticated, isLoading, router])
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-50 to-brand-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -37,9 +40,9 @@ export default function LoginPage() {
     )
   }
 
-  if (isAuthenticated) {
-    return null // Will redirect to dashboard
+  if (!isAuthenticated) {
+    return null
   }
 
-  return <LoginForm />
+  return <>{children}</>
 }
