@@ -3,7 +3,13 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { StatsCards } from '@/components/dashboard/stats-cards'
-import { StatsCardsSkeleton, ChartSkeleton } from '@/components/ui/loading-skeleton'
+import { 
+  RevenueChart, 
+  ServiceBreakdownChart, 
+  PerformanceMetricsChart,
+  FinancialOverviewChart 
+} from '@/components/dashboard/chart-widgets'
+import { StatsCardsSkeleton } from '@/components/ui/loading-skeleton'
 import { generateDashboardMetrics } from '@/lib/data'
 import { DashboardMetrics } from '@/types'
 
@@ -16,7 +22,7 @@ export default function DashboardPage() {
     const timer = setTimeout(() => {
       setMetrics(generateDashboardMetrics())
       setIsLoading(false)
-    }, 1500)
+    }, 1000)
 
     return () => clearTimeout(timer)
   }, [])
@@ -25,11 +31,6 @@ export default function DashboardPage() {
     return (
       <div className="space-y-8">
         <StatsCardsSkeleton />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ChartSkeleton />
-          <ChartSkeleton />
-        </div>
-        <ChartSkeleton height={300} />
       </div>
     )
   }
@@ -44,32 +45,21 @@ export default function DashboardPage() {
       {/* Stats Cards */}
       {metrics && <StatsCards metrics={metrics} />}
 
-      {/* Charts Placeholder */}
+      {/* Top Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <ChartSkeleton />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <ChartSkeleton />
-        </motion.div>
+        <RevenueChart />
+        <ServiceBreakdownChart />
       </div>
 
-      {/* Large Chart Placeholder */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
-        <ChartSkeleton height={300} />
-      </motion.div>
+      {/* Performance Metrics */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <FinancialOverviewChart />
+        </div>
+        <div>
+          <PerformanceMetricsChart />
+        </div>
+      </div>
     </motion.div>
   )
 }

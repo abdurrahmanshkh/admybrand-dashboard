@@ -73,3 +73,27 @@ export function TableSkeleton() {
     </Card>
   )
 }
+
+export function ChartLoadingSkeleton({ height = 300 }: { height?: number }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <Skeleton className="h-8 w-24" />
+      </div>
+      <div className="relative">
+        <Skeleton className="w-full" style={{ height }} />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}

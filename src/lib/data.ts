@@ -97,3 +97,79 @@ export function createRealTimeDataStream(callback: (data: any) => void, interval
   
   return () => clearInterval(intervalId)
 }
+
+// Generate time series data for charts
+export function generateTimeSeriesData(days: number = 30): ChartDataPoint[] {
+  const data: ChartDataPoint[] = []
+  const now = new Date()
+  
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now)
+    date.setDate(date.getDate() - i)
+    
+    // Generate realistic trending data
+    const baseValue = 1000
+    const trend = (days - i) * 50 // Upward trend
+    const randomVariation = (Math.random() - 0.5) * 200
+    const value = Math.max(0, baseValue + trend + randomVariation)
+    
+    data.push({
+      name: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      value: Math.round(value),
+      date: date.toISOString()
+    })
+  }
+  
+  return data
+}
+
+// Generate revenue breakdown data
+export function generateRevenueBreakdown() {
+  return [
+    { name: 'Digital Marketing', value: 45, color: '#3b82f6' },
+    { name: 'SEO Services', value: 25, color: '#10b981' },
+    { name: 'Social Media', value: 15, color: '#f59e0b' },
+    { name: 'Content Creation', value: 10, color: '#ef4444' },
+    { name: 'Consulting', value: 5, color: '#8b5cf6' }
+  ]
+}
+
+// Generate performance metrics data
+export function generatePerformanceMetrics() {
+  const categories = ['Web Traffic', 'Conversions', 'Revenue', 'Engagement', 'ROI']
+  return categories.map(category => ({
+    name: category,
+    current: Math.floor(Math.random() * 100) + 50,
+    previous: Math.floor(Math.random() * 100) + 30,
+    target: Math.floor(Math.random() * 100) + 80
+  }))
+}
+
+// Generate multi-series chart data
+export function generateMultiSeriesData(months: number = 12) {
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  
+  return monthNames.slice(0, months).map((month, index) => ({
+    name: month,
+    revenue: Math.floor(Math.random() * 10000) + 5000,
+    expenses: Math.floor(Math.random() * 7000) + 3000,
+    profit: 0 // Will be calculated
+  })).map(item => ({
+    ...item,
+    profit: item.revenue - item.expenses
+  }))
+}
+
+// Generate real-time data updates
+export function simulateRealTimeData(callback: (data: ChartDataPoint) => void) {
+  const interval = setInterval(() => {
+    const newPoint: ChartDataPoint = {
+      name: new Date().toLocaleTimeString(),
+      value: Math.floor(Math.random() * 1000) + 500,
+      date: new Date().toISOString()
+    }
+    callback(newPoint)
+  }, 3000)
+  
+  return () => clearInterval(interval)
+}
