@@ -20,7 +20,6 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate loading
     const timer = setTimeout(() => {
       setMetrics(generateDashboardMetrics())
       setIsLoading(false)
@@ -42,31 +41,69 @@ export default function DashboardPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="space-y-8"
+      className="space-y-8 pb-8"
     >
       {/* Stats Cards */}
-      {metrics && <StatsCards metrics={metrics} />}
+      {metrics && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <StatsCards metrics={metrics} />
+        </motion.div>
+      )}
 
-      {/* AI Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+        {/* Left Column - Revenue Chart (Takes more space) */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="xl:col-span-3"
+        >
           <RevenueChart />
-        </div>
-        <div>
+        </motion.div>
+
+        {/* Right Column - AI Insights */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="xl:col-span-1"
+        >
           <AIInsights />
-        </div>
+        </motion.div>
       </div>
 
       {/* Secondary Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ServiceBreakdownChart />
-        <PerformanceMetricsChart />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <ServiceBreakdownChart />
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <PerformanceMetricsChart />
+        </motion.div>
       </div>
 
-      {/* Full Width Chart */}
-      <div>
+      {/* Full Width Financial Chart */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
         <FinancialOverviewChart />
-      </div>
+      </motion.div>
 
       {/* PWA Install Prompt */}
       <InstallPrompt />

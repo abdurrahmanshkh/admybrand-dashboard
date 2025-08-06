@@ -9,11 +9,14 @@ export default function DashboardLayout({
 }) {
   return (
     <AuthGuard>
-      <div className="h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
         <Sidebar />
-        <div className="lg:ml-80">
+        
+        {/* Main Content Area */}
+        <div className="lg:ml-80 transition-all duration-300">
           <Header />
-          <main className="py-8 px-6">
+          
+          <main className="p-6 lg:p-8">
             <div className="mx-auto max-w-7xl">
               {children}
             </div>
