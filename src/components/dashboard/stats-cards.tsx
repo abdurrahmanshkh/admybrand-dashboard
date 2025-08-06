@@ -30,17 +30,18 @@ function StatsCard({ title, value, change, icon: Icon, color, index }: StatsCard
       <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-900">
         <CardContent className="p-6">
           <div className="flex items-start justify-between">
-            <div className="flex-1 min-w-0 pr-4">
-              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 truncate">
+            {/* Left Content - Fixed positioning */}
+            <div className="flex-1 min-w-0 mr-4">
+              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3 truncate">
                 {title}
               </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mb-3 leading-none">
+              <p className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight break-words">
                 {typeof value === 'number' ? formatNumber(value) : value}
               </p>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 flex-wrap">
                 <Badge
                   className={cn(
-                    'text-xs font-semibold px-2.5 py-1 rounded-full border-0',
+                    'text-xs font-semibold px-3 py-1.5 rounded-full border-0',
                     isPositive && 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
                     !isPositive && !isNeutral && 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
                     isNeutral && 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
@@ -52,22 +53,25 @@ function StatsCard({ title, value, change, icon: Icon, color, index }: StatsCard
                     <span>{formatPercentage(Math.abs(change))}</span>
                   </div>
                 </Badge>
-                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">
                   vs last month
                 </span>
               </div>
             </div>
             
-            <div className={cn(
-              'flex items-center justify-center w-14 h-14 rounded-xl shadow-lg flex-shrink-0',
-              color
-            )}>
-              <Icon className="h-7 w-7 text-white" />
+            {/* Right Icon - Fixed positioning to not overlap */}
+            <div className="flex-shrink-0">
+              <div className={cn(
+                'flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 rounded-xl shadow-lg',
+                color
+              )}>
+                <Icon className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+              </div>
             </div>
           </div>
           
-          {/* Background decoration */}
-          <div className="absolute -top-4 -right-4 w-24 h-24 opacity-10 pointer-events-none">
+          {/* Background decoration - moved further */}
+          <div className="absolute -top-6 -right-6 w-24 h-24 opacity-10 pointer-events-none">
             <div className={cn('w-full h-full rounded-full', color)} />
           </div>
           
@@ -121,7 +125,7 @@ export function StatsCards({ metrics }: StatsCardsProps) {
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
       {cards.map((card, index) => (
         <StatsCard
           key={card.title}

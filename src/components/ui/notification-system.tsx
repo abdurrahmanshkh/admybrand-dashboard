@@ -57,14 +57,6 @@ const generateNotifications = (): Notification[] => [
       label: 'Try Now',
       onClick: () => toast.success('AI Insights activated')
     }
-  },
-  {
-    id: '4',
-    type: 'update',
-    title: 'Data Refresh',
-    message: 'Dashboard data has been updated with latest metrics',
-    timestamp: new Date(Date.now() - 60 * 60 * 1000),
-    read: true
   }
 ]
 
@@ -75,7 +67,6 @@ export function NotificationSystem() {
   useEffect(() => {
     setNotifications(generateNotifications())
 
-    // Simulate real-time notifications
     const interval = setInterval(() => {
       const types: Array<'success' | 'warning' | 'info' | 'update'> = ['success', 'warning', 'info', 'update']
       const messages = [
@@ -97,14 +88,21 @@ export function NotificationSystem() {
         read: false
       }
 
-      setNotifications(prev => [newNotification, ...prev.slice(0, 9)]) // Keep only latest 10
+      setNotifications(prev => [newNotification, ...prev.slice(0, 9)])
       
-      // Show toast notification
+      // Better toast notification with higher contrast
       toast(randomMessage.title, {
         description: randomMessage.message,
-        duration: 4000,
+        duration: 5000,
+        style: {
+          background: 'hsl(var(--background))',
+          color: 'hsl(var(--foreground))',
+          border: '1px solid hsl(var(--border))',
+          fontSize: '14px',
+          fontWeight: '500'
+        },
       })
-    }, 30000) // New notification every 30 seconds
+    }, 30000)
 
     return () => clearInterval(interval)
   }, [])
@@ -127,11 +125,11 @@ export function NotificationSystem() {
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'success': return <Check className="w-4 h-4 text-green-500" />
-      case 'warning': return <AlertTriangle className="w-4 h-4 text-yellow-500" />
-      case 'info': return <Info className="w-4 h-4 text-blue-500" />
-      case 'update': return <TrendingUp className="w-4 h-4 text-purple-500" />
-      default: return <Bell className="w-4 h-4 text-gray-500" />
+      case 'success': return <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
+      case 'warning': return <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+      case 'info': return <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+      case 'update': return <TrendingUp className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+      default: return <Bell className="w-4 h-4 text-gray-600 dark:text-gray-400" />
     }
   }
 
@@ -154,16 +152,16 @@ export function NotificationSystem() {
         variant="ghost"
         size="icon"
         onClick={() => setIsOpen(!isOpen)}
-        className="relative"
+        className="relative hover:bg-gray-100 dark:hover:bg-gray-800"
       >
-        <Bell className="h-5 w-5" />
+        <Bell className="h-5 w-5 text-gray-700 dark:text-gray-300" />
         <AnimatePresence>
           {unreadCount > 0 && (
             <motion.span
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
-              className="absolute -top-2 -right-2 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium"
+              className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg"
             >
               {unreadCount > 9 ? '9+' : unreadCount}
             </motion.span>
@@ -174,7 +172,6 @@ export function NotificationSystem() {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -183,7 +180,6 @@ export function NotificationSystem() {
               className="fixed inset-0 z-40"
             />
 
-            {/* Notification Panel */}
             <motion.div
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -191,14 +187,14 @@ export function NotificationSystem() {
               transition={{ duration: 0.2 }}
               className="absolute right-0 mt-2 w-96 z-50"
             >
-              <Card className="shadow-xl border-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+              <Card className="shadow-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
                   <div className="flex items-center space-x-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                    <h3 ClassName="font-semibold text-gray-900 dark:text-white">
                       Notifications
                     </h3>
                     {unreadCount > 0 && (
-                      <Badge className="bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300">
+                      <Badge className="bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 border-0">
                         {unreadCount} new
                       </Badge>
                     )}
@@ -209,7 +205,7 @@ export function NotificationSystem() {
                         variant="ghost"
                         size="sm"
                         onClick={markAllAsRead}
-                        className="text-xs"
+                        className="text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
                       >
                         Mark all read
                       </Button>
@@ -218,7 +214,7 @@ export function NotificationSystem() {
                       variant="ghost"
                       size="icon"
                       onClick={() => setIsOpen(false)}
-                      className="h-6 w-6"
+                      className="h-6 w-6 hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -238,25 +234,25 @@ export function NotificationSystem() {
                             transition={{ delay: index * 0.05 }}
                             onClick={() => markAsRead(notification.id)}
                             className={`p-4 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${
-                              !notification.read ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''
+                              !notification.read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
                             }`}
                           >
                             <div className="flex items-start space-x-3">
                               {getIcon(notification.type)}
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between mb-1">
-                                  <p className="font-medium text-sm text-gray-900 dark:text-white">
+                                  <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">
                                     {notification.title}
                                   </p>
                                   {!notification.read && (
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
                                   )}
                                 </div>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 leading-relaxed">
                                   {notification.message}
                                 </p>
                                 <div className="flex items-center justify-between">
-                                  <p className="text-xs text-gray-500 dark:text-gray-500">
+                                  <p className="text-xs text-gray-500 dark:text-gray-500 font-medium">
                                     {formatTime(notification.timestamp)}
                                   </p>
                                   {notification.action && (
@@ -267,7 +263,7 @@ export function NotificationSystem() {
                                         e.stopPropagation()
                                         notification.action?.onClick()
                                       }}
-                                      className="text-xs h-6"
+                                      className="text-xs h-6 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
                                     >
                                       {notification.action.label}
                                     </Button>
@@ -280,11 +276,11 @@ export function NotificationSystem() {
                       ) : (
                         <div className="p-8 text-center">
                           <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <p className="text-gray-500 dark:text-gray-400">
+                          <p className="text-gray-500 dark:text-gray-400 font-medium">
                             No notifications yet
                           </p>
                           <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-                            You'll see updates about your campaigns and performance here
+                            You'll see updates about your campaigns here
                           </p>
                         </div>
                       )}

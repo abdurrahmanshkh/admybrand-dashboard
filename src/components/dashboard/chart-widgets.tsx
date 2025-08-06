@@ -21,13 +21,11 @@ export function RevenueChart() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Initial load
     setTimeout(() => {
       setData(generateTimeSeriesData(30))
       setIsLoading(false)
     }, 1000)
 
-    // Set up real-time updates
     const cleanup = simulateRealTimeData((newPoint) => {
       setData(prevData => {
         const newData = [...prevData.slice(1), newPoint]
@@ -49,6 +47,7 @@ export function RevenueChart() {
       onRefresh={handleRefresh}
       badge="Live"
       isLoading={isLoading}
+      chartId="revenue-trend"
     >
       {!isLoading && (
         <RechartsLineChart 
@@ -83,13 +82,14 @@ export function ServiceBreakdownChart() {
       subtitle="Revenue distribution by service type"
       onRefresh={handleRefresh}
       isLoading={isLoading}
+      chartId="service-breakdown"
     >
       {!isLoading && (
         <RechartsPieChart 
           data={data} 
-          height={350}
+          height={400}
           innerRadius={70}
-          outerRadius={130}
+          outerRadius={120}
         />
       )}
     </ChartContainer>
@@ -117,12 +117,13 @@ export function PerformanceMetricsChart() {
       subtitle="Current vs previous period comparison"
       onRefresh={handleRefresh}
       isLoading={isLoading}
+      chartId="performance-metrics"
     >
       {!isLoading && (
         <RechartsBarChart 
           data={data} 
           dataKey="current"
-          height={300}
+          height={400}
         />
       )}
     </ChartContainer>
@@ -150,6 +151,7 @@ export function FinancialOverviewChart() {
       subtitle="Monthly revenue, expenses, and profit analysis"
       onRefresh={handleRefresh}
       isLoading={isLoading}
+      chartId="financial-overview"
     >
       {!isLoading && (
         <MultiSeriesChart 
