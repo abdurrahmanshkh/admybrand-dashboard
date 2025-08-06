@@ -85,12 +85,14 @@ export function ServiceBreakdownChart() {
       chartId="service-breakdown"
     >
       {!isLoading && (
-        <RechartsPieChart 
-          data={data} 
-          height={400}
-          innerRadius={70}
-          outerRadius={120}
-        />
+        <div className="px-4">
+          <RechartsPieChart 
+            data={data} 
+            height={450}
+            innerRadius={70}
+            outerRadius={130}
+          />
+        </div>
       )}
     </ChartContainer>
   )

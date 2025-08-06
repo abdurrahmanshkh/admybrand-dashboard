@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bell, X, Check, AlertTriangle, Info, TrendingUp } from 'lucide-react'
+import { Bell, X, Check, AlertTriangle, Info, TrendingUp, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -70,18 +70,17 @@ export function NotificationSystem() {
     const interval = setInterval(() => {
       const types: Array<'success' | 'warning' | 'info' | 'update'> = ['success', 'warning', 'info', 'update']
       const messages = [
-        { title: 'New Lead Generated', message: 'A high-value lead from LinkedIn campaign' },
-        { title: 'Performance Alert', message: 'CTR dropped below target for Facebook ads' },
-        { title: 'Data Updated', message: 'Latest analytics data is now available' },
-        { title: 'Goal Achieved', message: 'Monthly conversion target reached!' }
+        { title: '🎯 New Lead Generated', message: 'A high-value lead from LinkedIn campaign', type: 'success' },
+        { title: '⚠️ Performance Alert', message: 'CTR dropped below target for Facebook ads', type: 'warning' },
+        { title: '📊 Data Updated', message: 'Latest analytics data is now available', type: 'info' },
+        { title: '🎉 Goal Achieved', message: 'Monthly conversion target reached!', type: 'success' }
       ]
 
-      const randomType = types[Math.floor(Math.random() * types.length)]
       const randomMessage = messages[Math.floor(Math.random() * messages.length)]
 
       const newNotification: Notification = {
         id: Date.now().toString(),
-        type: randomType,
+        type: randomMessage.type as any,
         title: randomMessage.title,
         message: randomMessage.message,
         timestamp: new Date(),
@@ -90,18 +89,81 @@ export function NotificationSystem() {
 
       setNotifications(prev => [newNotification, ...prev.slice(0, 9)])
       
-      // Better toast notification with higher contrast
-      toast(randomMessage.title, {
-        description: randomMessage.message,
-        duration: 5000,
-        style: {
-          background: 'hsl(var(--background))',
-          color: 'hsl(var(--foreground))',
-          border: '1px solid hsl(var(--border))',
-          fontSize: '14px',
-          fontWeight: '500'
-        },
-      })
+      // Enhanced toast notification with solid background and better styling
+      if (randomMessage.type === 'success') {
+        toast.success(randomMessage.title, {
+          description: randomMessage.message,
+          duration: 6000,
+          style: {
+            background: '#10b981',
+            color: 'white',
+            border: '1px solid #059669',
+            borderRadius: '12px',
+            boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.3), 0 10px 10px -5px rgba(16, 185, 129, 0.1)',
+            backdropFilter: 'blur(12px)',
+            fontWeight: '600',
+            fontSize: '14px',
+            padding: '16px 20px',
+            zIndex: 9999
+          },
+          action: {
+            label: 'View',
+            onClick: () => console.log('View action clicked'),
+          },
+        })
+      } else if (randomMessage.type === 'warning') {
+        toast.warning(randomMessage.title, {
+          description: randomMessage.message,
+          duration: 8000,
+          style: {
+            background: '#f59e0b',
+            color: 'white',
+            border: '1px solid #d97706',
+            borderRadius: '12px',
+            boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.3), 0 10px 10px -5px rgba(245, 158, 11, 0.1)',
+            backdropFilter: 'blur(12px)',
+            fontWeight: '600',
+            fontSize: '14px',
+            padding: '16px 20px',
+            zIndex: 9999
+          },
+        })
+      } else if (randomMessage.type === 'info') {
+        toast.info(randomMessage.title, {
+          description: randomMessage.message,
+          duration: 6000,
+          style: {
+            background: '#3b82f6',
+            color: 'white',
+            border: '1px solid #2563eb',
+            borderRadius: '12px',
+            boxShadow: '0 20px 25px -5px rgba(59, 130, 246, 0.3), 0 10px 10px -5px rgba(59, 130, 246, 0.1)',
+            backdropFilter: 'blur(12px)',
+            fontWeight: '600',
+            fontSize: '14px',
+            padding: '16px 20px',
+            zIndex: 9999
+          },
+        })
+      } else {
+        toast(randomMessage.title, {
+          description: randomMessage.message,
+          duration: 6000,
+          style: {
+            background: 'white',
+            color: '#1f2937',
+            border: '1px solid #e5e7eb',
+            borderRadius: '12px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(12px)',
+            fontWeight: '600',
+            fontSize: '14px',
+            padding: '16px 20px',
+            zIndex: 9999
+          },
+          icon: <Sparkles className="w-5 h-5 text-purple-600" />,
+        })
+      }
     }, 30000)
 
     return () => clearInterval(interval)
@@ -190,7 +252,7 @@ export function NotificationSystem() {
               <Card className="shadow-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
                   <div className="flex items-center space-x-2">
-                    <h3 ClassName="font-semibold text-gray-900 dark:text-white">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
                       Notifications
                     </h3>
                     {unreadCount > 0 && (
