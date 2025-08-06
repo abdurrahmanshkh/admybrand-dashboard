@@ -250,3 +250,69 @@
     z-index: 9999 !important;
   }
 }
+
+/* Enhanced close button styles for toasts */
+@layer components {
+  /* Toast close button enhancement */
+  [data-sonner-toast] [data-close-button] {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: currentColor !important;
+    border-radius: 6px !important;
+    padding: 4px !important;
+    width: 20px !important;
+    height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    opacity: 0.8 !important;
+  }
+  
+  [data-sonner-toast] [data-close-button]:hover {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+  }
+  
+  /* Success toast close button */
+  [data-sonner-toast][data-type="success"] [data-close-button] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  [data-sonner-toast][data-type="success"] [data-close-button]:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  /* Warning toast close button */
+  [data-sonner-toast][data-type="warning"] [data-close-button] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  [data-sonner-toast][data-type="warning"] [data-close-button]:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  /* Error toast close button */
+  [data-sonner-toast][data-type="error"] [data-close-button] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  [data-sonner-toast][data-type="error"] [data-close-button]:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  /* Info toast close button */
+  [data-sonner-toast][data-type="info"] [data-close-button] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  [data-sonner-toast][data-type="info"] [data-close-button]:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+}

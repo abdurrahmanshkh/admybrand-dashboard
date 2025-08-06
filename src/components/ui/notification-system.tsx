@@ -68,7 +68,6 @@ export function NotificationSystem() {
     setNotifications(generateNotifications())
 
     const interval = setInterval(() => {
-      const types: Array<'success' | 'warning' | 'info' | 'update'> = ['success', 'warning', 'info', 'update']
       const messages = [
         { title: '🎯 New Lead Generated', message: 'A high-value lead from LinkedIn campaign', type: 'success' },
         { title: '⚠️ Performance Alert', message: 'CTR dropped below target for Facebook ads', type: 'warning' },
@@ -106,10 +105,6 @@ export function NotificationSystem() {
             padding: '16px 20px',
             zIndex: 9999
           },
-          action: {
-            label: 'View',
-            onClick: () => console.log('View action clicked'),
-          },
         })
       } else if (randomMessage.type === 'warning') {
         toast.warning(randomMessage.title, {
@@ -144,24 +139,6 @@ export function NotificationSystem() {
             padding: '16px 20px',
             zIndex: 9999
           },
-        })
-      } else {
-        toast(randomMessage.title, {
-          description: randomMessage.message,
-          duration: 6000,
-          style: {
-            background: 'white',
-            color: '#1f2937',
-            border: '1px solid #e5e7eb',
-            borderRadius: '12px',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(12px)',
-            fontWeight: '600',
-            fontSize: '14px',
-            padding: '16px 20px',
-            zIndex: 9999
-          },
-          icon: <Sparkles className="w-5 h-5 text-purple-600" />,
         })
       }
     }, 30000)
@@ -272,13 +249,14 @@ export function NotificationSystem() {
                         Mark all read
                       </Button>
                     )}
+                    {/* Enhanced Close Button with Better Visibility */}
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
                       onClick={() => setIsOpen(false)}
-                      className="h-6 w-6 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="h-8 w-8 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 dark:hover:border-red-600 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 shadow-sm"
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-4 w-4 font-bold" />
                     </Button>
                   </div>
                 </div>
