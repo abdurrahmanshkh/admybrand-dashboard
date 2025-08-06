@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { StatsCards } from '@/components/dashboard/stats-cards'
+import { AIInsights } from '@/components/dashboard/ai-insights'
 import { 
   RevenueChart, 
   ServiceBreakdownChart, 
@@ -10,6 +11,7 @@ import {
   FinancialOverviewChart 
 } from '@/components/dashboard/chart-widgets'
 import { StatsCardsSkeleton } from '@/components/ui/loading-skeleton'
+import { InstallPrompt } from '@/components/ui/install-prompt'
 import { generateDashboardMetrics } from '@/lib/data'
 import { DashboardMetrics } from '@/types'
 
@@ -45,21 +47,29 @@ export default function DashboardPage() {
       {/* Stats Cards */}
       {metrics && <StatsCards metrics={metrics} />}
 
-      {/* Top Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RevenueChart />
-        <ServiceBreakdownChart />
-      </div>
-
-      {/* Performance Metrics */}
+      {/* AI Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <FinancialOverviewChart />
+          <RevenueChart />
         </div>
         <div>
-          <PerformanceMetricsChart />
+          <AIInsights />
         </div>
       </div>
+
+      {/* Secondary Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ServiceBreakdownChart />
+        <PerformanceMetricsChart />
+      </div>
+
+      {/* Full Width Chart */}
+      <div>
+        <FinancialOverviewChart />
+      </div>
+
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
     </motion.div>
   )
 }
