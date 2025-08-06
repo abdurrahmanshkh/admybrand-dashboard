@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bell, X, Check, AlertTriangle, Info, TrendingUp, Sparkles } from 'lucide-react'
+import { Bell, X, Check, AlertTriangle, Info, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -33,30 +33,6 @@ const generateNotifications = (): Notification[] => [
       label: 'View Details',
       onClick: () => toast.success('Redirecting to campaign details')
     }
-  },
-  {
-    id: '2',
-    type: 'warning',
-    title: 'Budget Alert',
-    message: 'Marketing budget is 85% utilized for this month',
-    timestamp: new Date(Date.now() - 15 * 60 * 1000),
-    read: false,
-    action: {
-      label: 'Adjust Budget',
-      onClick: () => toast.info('Budget adjustment panel opened')
-    }
-  },
-  {
-    id: '3',
-    type: 'info',
-    title: 'New Feature',
-    message: 'Advanced AI insights are now available in your dashboard',
-    timestamp: new Date(Date.now() - 30 * 60 * 1000),
-    read: true,
-    action: {
-      label: 'Try Now',
-      onClick: () => toast.success('AI Insights activated')
-    }
   }
 ]
 
@@ -66,99 +42,7 @@ export function NotificationSystem() {
 
   useEffect(() => {
     setNotifications(generateNotifications())
-
-    const interval = setInterval(() => {
-      const messages = [
-        { title: '🎯 New Lead Generated', message: 'A high-value lead from LinkedIn campaign', type: 'success' },
-        { title: '⚠️ Performance Alert', message: 'CTR dropped below target for Facebook ads', type: 'warning' },
-        { title: '📊 Data Updated', message: 'Latest analytics data is now available', type: 'info' },
-        { title: '🎉 Goal Achieved', message: 'Monthly conversion target reached!', type: 'success' }
-      ]
-
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)]
-
-      const newNotification: Notification = {
-        id: Date.now().toString(),
-        type: randomMessage.type as any,
-        title: randomMessage.title,
-        message: randomMessage.message,
-        timestamp: new Date(),
-        read: false
-      }
-
-      setNotifications(prev => [newNotification, ...prev.slice(0, 9)])
-      
-      // Enhanced toast notification with solid background and better styling
-      if (randomMessage.type === 'success') {
-        toast.success(randomMessage.title, {
-          description: randomMessage.message,
-          duration: 6000,
-          style: {
-            background: '#10b981',
-            color: 'white',
-            border: '1px solid #059669',
-            borderRadius: '12px',
-            boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.3), 0 10px 10px -5px rgba(16, 185, 129, 0.1)',
-            backdropFilter: 'blur(12px)',
-            fontWeight: '600',
-            fontSize: '14px',
-            padding: '16px 20px',
-            zIndex: 9999
-          },
-        })
-      } else if (randomMessage.type === 'warning') {
-        toast.warning(randomMessage.title, {
-          description: randomMessage.message,
-          duration: 8000,
-          style: {
-            background: '#f59e0b',
-            color: 'white',
-            border: '1px solid #d97706',
-            borderRadius: '12px',
-            boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.3), 0 10px 10px -5px rgba(245, 158, 11, 0.1)',
-            backdropFilter: 'blur(12px)',
-            fontWeight: '600',
-            fontSize: '14px',
-            padding: '16px 20px',
-            zIndex: 9999
-          },
-        })
-      } else if (randomMessage.type === 'info') {
-        toast.info(randomMessage.title, {
-          description: randomMessage.message,
-          duration: 6000,
-          style: {
-            background: '#3b82f6',
-            color: 'white',
-            border: '1px solid #2563eb',
-            borderRadius: '12px',
-            boxShadow: '0 20px 25px -5px rgba(59, 130, 246, 0.3), 0 10px 10px -5px rgba(59, 130, 246, 0.1)',
-            backdropFilter: 'blur(12px)',
-            fontWeight: '600',
-            fontSize: '14px',
-            padding: '16px 20px',
-            zIndex: 9999
-          },
-        })
-      }
-    }, 30000)
-
-    return () => clearInterval(interval)
   }, [])
-
-  const markAsRead = (id: string) => {
-    setNotifications(prev =>
-      prev.map(notif =>
-        notif.id === id ? { ...notif, read: true } : notif
-      )
-    )
-  }
-
-  const markAllAsRead = () => {
-    setNotifications(prev =>
-      prev.map(notif => ({ ...notif, read: true }))
-    )
-  }
 
   const unreadCount = notifications.filter(n => !n.read).length
 
@@ -168,21 +52,8 @@ export function NotificationSystem() {
       case 'warning': return <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
       case 'info': return <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
       case 'update': return <TrendingUp className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-      default: return <Bell className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+      default: return <Bell className="w-4 w-4 text-gray-600 dark:text-gray-400" />
     }
-  }
-
-  const formatTime = (timestamp: Date) => {
-    const now = new Date()
-    const diff = now.getTime() - timestamp.getTime()
-    const minutes = Math.floor(diff / (1000 * 60))
-    
-    if (minutes < 1) return 'Just now'
-    if (minutes < 60) return `${minutes}m ago`
-    const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours}h ago`
-    const days = Math.floor(hours / 24)
-    return `${days}d ago`
   }
 
   return (
@@ -210,126 +81,27 @@ export function NotificationSystem() {
 
       <AnimatePresence>
         {isOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-40"
-            />
-
-            <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-96 z-50"
-            >
-              <Card className="shadow-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-                <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-                  <div className="flex items-center space-x-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
-                      Notifications
-                    </h3>
-                    {unreadCount > 0 && (
-                      <Badge className="bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300 border-0">
-                        {unreadCount} new
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    {unreadCount > 0 && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={markAllAsRead}
-                        className="text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
-                      >
-                        Mark all read
-                      </Button>
-                    )}
-                    {/* Enhanced Close Button with Better Visibility */}
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setIsOpen(false)}
-                      className="h-8 w-8 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-300 dark:hover:border-red-600 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 shadow-sm"
-                    >
-                      <X className="h-4 w-4 font-bold" />
-                    </Button>
-                  </div>
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 mt-2 w-96 z-50"
+          >
+            <Card className="shadow-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-500 dark:text-gray-400 font-medium">
+                    No notifications yet
+                  </p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+                    You&apos;ll see updates about your campaigns here
+                  </p>
                 </div>
-
-                <CardContent className="p-0">
-                  <div className="max-h-96 overflow-y-auto">
-                    <AnimatePresence>
-                      {notifications.length > 0 ? (
-                        notifications.map((notification, index) => (
-                          <motion.div
-                            key={notification.id}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: 20 }}
-                            transition={{ delay: index * 0.05 }}
-                            onClick={() => markAsRead(notification.id)}
-                            className={`p-4 border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${
-                              !notification.read ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''
-                            }`}
-                          >
-                            <div className="flex items-start space-x-3">
-                              {getIcon(notification.type)}
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between mb-1">
-                                  <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">
-                                    {notification.title}
-                                  </p>
-                                  {!notification.read && (
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
-                                  )}
-                                </div>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 leading-relaxed">
-                                  {notification.message}
-                                </p>
-                                <div className="flex items-center justify-between">
-                                  <p className="text-xs text-gray-500 dark:text-gray-500 font-medium">
-                                    {formatTime(notification.timestamp)}
-                                  </p>
-                                  {notification.action && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        notification.action?.onClick()
-                                      }}
-                                      className="text-xs h-6 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                                    >
-                                      {notification.action.label}
-                                    </Button>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))
-                      ) : (
-                        <div className="p-8 text-center">
-                          <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <p className="text-gray-500 dark:text-gray-400 font-medium">
-                            No notifications yet
-                          </p>
-                          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-                            You'll see updates about your campaigns here
-                          </p>
-                        </div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </>
+              </CardContent>
+            </Card>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
