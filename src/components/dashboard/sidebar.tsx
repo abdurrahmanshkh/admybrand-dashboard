@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -22,6 +21,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import { useSidebar } from '@/context/sidebar-context'
 
 interface NavItem {
   name: string
@@ -44,19 +44,9 @@ const secondaryNavigation: NavItem[] = [
   { name: 'Activity', href: '/dashboard/activity', icon: Activity },
 ]
 
-interface SidebarProps {
-  className?: string
-}
-
-export function Sidebar({ className }: SidebarProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+export function Sidebar() {
+  const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen } = useSidebar()
   const pathname = usePathname()
-
-  const sidebarVariants = {
-    expanded: { width: 280 },
-    collapsed: { width: 80 }
-  }
 
   return (
     <>
@@ -87,14 +77,14 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Sidebar */}
       <motion.aside
-        variants={sidebarVariants}
-        animate={isCollapsed ? 'collapsed' : 'expanded'}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        animate={{ 
+          width: isCollapsed ? 80 : 280,
+          transition: { duration: 0.3, ease: 'easeInOut' }
+        }}
         className={cn(
           'fixed left-0 top-0 z-40 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-xl',
           'lg:translate-x-0 transition-transform duration-300',
-          isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-          className
+          isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         <div className="flex h-full flex-col">

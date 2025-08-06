@@ -64,38 +64,14 @@ export default function RootLayout({
                   color: '#1f2937',
                   border: '1px solid #e5e7eb',
                   borderRadius: '12px',
-                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+                  backdropFilter: 'blur(12px)',
+                  fontWeight: '600',
                   fontSize: '14px',
-                  fontWeight: '500',
-                  padding: '16px',
-                  minHeight: '64px',
+                  padding: '16px 20px',
+                  zIndex: 9999
                 },
-                className: 'toast-custom',
               }}
-              theme="light"
-            />
-            {/* Dark mode toaster */}
-            <Toaster 
-              position="top-right"
-              expand={true}
-              richColors={true}
-              closeButton={true}
-              toastOptions={{
-                duration: 5000,
-                style: {
-                  background: '#1f2937',
-                  color: 'white',
-                  border: '1px solid #374151',
-                  borderRadius: '12px',
-                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  padding: '16px',
-                  minHeight: '64px',
-                },
-                className: 'toast-custom-dark',
-              }}
-              theme="dark"
             />
           </AuthProvider>
         </ThemeProvider>
