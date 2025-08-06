@@ -3,15 +3,11 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { StatsCards } from '@/components/dashboard/stats-cards'
-import { 
-  RevenueChart, 
-  ServiceBreakdownChart, 
-  PerformanceMetricsChart,
-  FinancialOverviewChart 
-} from '@/components/dashboard/chart-widgets'
 import { StatsCardsSkeleton } from '@/components/ui/loading-skeleton'
 import { generateDashboardMetrics } from '@/lib/data'
 import { DashboardMetrics } from '@/types'
+import { WidgetArea } from '@/components/dashboard/widget-area'
+import { AIInsights } from '@/components/dashboard/ai-insights'
 
 export default function DashboardPage() {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null)
@@ -23,7 +19,6 @@ export default function DashboardPage() {
       setMetrics(generateDashboardMetrics())
       setIsLoading(false)
     }, 1000)
-
     return () => clearTimeout(timer)
   }, [])
 
@@ -45,21 +40,11 @@ export default function DashboardPage() {
       {/* Stats Cards */}
       {metrics && <StatsCards metrics={metrics} />}
 
-      {/* Top Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RevenueChart />
-        <ServiceBreakdownChart />
-      </div>
+      {/* AI Insights */}
+      <AIInsights />
 
-      {/* Performance Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <FinancialOverviewChart />
-        </div>
-        <div>
-          <PerformanceMetricsChart />
-        </div>
-      </div>
+      {/* Drag-and-drop Widgets */}
+      <WidgetArea />
     </motion.div>
   )
 }
