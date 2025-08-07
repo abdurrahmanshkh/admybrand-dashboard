@@ -30,13 +30,13 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 }
 
 interface CustomLabelProps {
-  cx: number
-  cy: number
-  midAngle: number
-  innerRadius: number
-  outerRadius: number
-  percent: number
-  value: number
+  cx?: number
+  cy?: number
+  midAngle?: number
+  innerRadius?: number
+  outerRadius?: number
+  percent?: number
+  value?: number
 }
 
 function CustomLabel({
@@ -48,6 +48,18 @@ function CustomLabel({
   percent,
   value,
 }: CustomLabelProps) {
+  if (
+    cx === undefined ||
+    cy === undefined ||
+    midAngle === undefined ||
+    innerRadius === undefined ||
+    outerRadius === undefined ||
+    percent === undefined ||
+    value === undefined
+  ) {
+    return null
+  }
+
   if (percent < 0.05) return null
 
   const RADIAN = Math.PI / 180
@@ -108,7 +120,7 @@ function CustomLegend({ data }: CustomLegendProps) {
 interface RechartsPieChartProps {
   data: LegendItem[]
   /** height of the chart area (excluding legend) */
-  chartHeight?: number
+  height?: number
   innerRadius?: number
   outerRadius?: number
   showLabels?: boolean
@@ -117,7 +129,6 @@ interface RechartsPieChartProps {
 
 export function RechartsPieChart({
   data,
-  chartHeight = 300,
   innerRadius = 55,
   outerRadius = 100,
   showLabels = true,
@@ -126,7 +137,7 @@ export function RechartsPieChart({
   return (
     <div className="w-full flex flex-col items-center">
       {/* Pie Chart */}
-      <div style={{ width: '100%', height: chartHeight }}>
+      <div style={{ width: '100%', height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart margin={{ top: 5, right: 15, bottom: 15, left: 15 }}>
             <Pie
